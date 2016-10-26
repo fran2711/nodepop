@@ -1,14 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+"use strict";
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
 
-var app = express();
+let app = express();
+
+// Connection to the database
+require('./lib/mongoConnection');
+
+// Models load
+require('./models/User');
+require('./models/Token');
+require('./models/Commercial');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// Index route
+app.use('/', require('./routes/index'));
+
+// API routes
+app.use('/apiv1/users', require('./routes/apiv1/users'));
+app.use('/apiv1/tokens', require('./routes/apiv1/tokens'));
+app.use('/apiv1/tokens', require('./routes/apiv1/commercials'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,10 +51,17 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    
+    // si es una petición de API devolvemos JSON, sino una página
+    if (isAPI(req)) {
+      res.json({success: false, error: err});
+    } else {
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+    }
+    
   });
 }
 
@@ -50,11 +69,23 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  
+  // si es una petición de API devolvemos JSON, sino una página
+  if (isAPI(req)) {
+    res.json({success: false, error: err});
+  } else {
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
+  }
+  
 });
+
+// Function for the error response in case is requested in the API
+function isAPI(req) {
+  return req.originalUrl.indexOf('/api') === 0;
+}
 
 
 module.exports = app;
