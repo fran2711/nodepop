@@ -1,0 +1,37 @@
+{
+  "ads": [
+    {
+      "name": "Bicicleta",
+      "sell": true,
+      "price": 230.15,
+      "photo": "Bici_de_montaña.jpg",
+      "tags": ["lifestyle", "motor"]
+    },
+
+    {
+      "name": "iPhone 6s",
+      "sell": false,
+      "price": 50.00,
+      "photo": "iPhone_6.png",
+      "tags": [ "lifestyle", "mobile"]
+    },
+
+    {
+      "name": "iPad Air 2",
+      "sell": false,
+      "price": 250.00,
+      "photo": "iPad_Air_2.jpg",
+      "tags": ["lifestyle", "mobile"]
+    },
+
+    {
+      "name": "Kawasaki Ninja z1000",
+      "sell": true,
+      "price": 2000.00,
+      "photo": "kawasaki_ninja.jpg",
+      "tags": ["motor", "lifestyle"]
+    }
+
+
+  ]
+}
