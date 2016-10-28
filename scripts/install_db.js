@@ -81,7 +81,7 @@ function insertData(db) {
         json = JSON.parse(data);
         
         console.log('Adding users');
-        db.collection('users').insert(json).then(function () {
+        db.collection('ads').insert(json).then(function () {
             console.log('Users added');
         }).catch(next);
     });
