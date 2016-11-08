@@ -6,13 +6,14 @@
 
 let client = require('mongodb').MongoClient;
 let fs = require('fs');
+let mongoDir = require('../config/local_config').mongoDir;
 
 
 function install() {
     
     console.log('Executing installation');
     
-    client.connect('mongodb://localhost:27017/nodepop', function (err, db) {
+    client.connect(mongoDir, function (err, db) {
     
         if (err){
             return err;
