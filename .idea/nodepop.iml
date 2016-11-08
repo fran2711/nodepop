@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/bin" />
+    <content url="file://$MODULE_DIR$/config" />
+    <content url="file://$MODULE_DIR$/lib" />
+    <content url="file://$MODULE_DIR$/models" />
+    <content url="file://$MODULE_DIR$/node_modules" />
+    <content url="file://$MODULE_DIR$/public" />
+    <content url="file://$MODULE_DIR$/routes" />
+    <content url="file://$MODULE_DIR$/scripts" />
+    <content url="file://$MODULE_DIR$/views" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
