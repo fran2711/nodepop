@@ -1,0 +1,9 @@
+{
+  "node": true,
+  "esnext": true,
+  "globals": {"__": false},
+  "globalstrict": true,
+  "quotmark": "single",
+  "undef": true,
+  "unused": true
+}

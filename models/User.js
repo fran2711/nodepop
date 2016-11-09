@@ -2,6 +2,11 @@
  * Created by Fran on 19/10/16.
  */
 
+/**
+ * User Model
+ */
+
+
 "use strict";
 
 let mongoose = require('mongoose');

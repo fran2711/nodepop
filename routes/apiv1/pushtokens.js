@@ -6,8 +6,9 @@
 
 let express = require('express');
 let router = express.Router();
+
 let mongoose = require('mongoose');
-let Token = mongoose.model('Token');
+let Token = mongoose.model('PushToken');
 
 
 router.post('/', function (req, res) {

@@ -4,70 +4,58 @@
 
 "use strict";
 
-let express = require('express');
-let router = express.Router();
-let mongoose = require('mongoose');
-let Commercial = mongoose.model('Commercial');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Commercial = mongoose.model('Commercial');
+
+const jwtAuth = require('../../lib/jwtAuth');
+router.use(jwtAuth());
 
 router.get('/', function (req, res, next) {
     
-    let filter = {};
-    let $regex;
     
-    let name = req.query.name;
-    let sell = req.query.sell;
-    let tags = req.query.tags;
-    let price = req.query.price;
+    const start = parseInt(req.query.start) || 0;
+    const limit = parseInt(req.query.limit) || 1000; // it return 1000 register max.
+    const sort = req.query.sort || '_id';
+    const includeTotal = req.query.includeTotal === 'true';
+    const filters = {};
     
-    let limit = parseInt(req.query.limit) || null;
-    let sort = req.query.sort || null;
-    let fields = req.query.fields || null;
-    let skip = parseInt(req.query.skip) || 0;
-    
-    
-    if (typeof name !== 'undefined'){
-        filter.name = name;
+    if (typeof req.query.tag !== 'undefined'){
+        filters.tags = req.query.tags;
     }
-    if (typeof sell !== 'undefined'){
-        filter.sell = sell;
+    if (typeof req.query.sell !== 'undefined'){
+        filter.sell = req.query.sell;
     }
-    if (typeof tags !== 'undefined'){
-        filter.tags = tags;
-    }
-    
-    if (name){
-        $regex = new RegExp('^' + name, 'i');
-        filter.name = {$regex};
-    }
-    
-    if (typeof price !== 'undefined'){
-        
-        let range = price.split('-');
-        
-        if (range.length === 1){
-            filter.price = range[0];
-        }else if(range.length === 2){
-            if (!range[0]){
-                filter.price = {$lt: range[1]};
+    if (typeof req.query.price !== 'undefined' && req.query.price !== '-'){
+        if (req.query.price.indexOf('-') !== -1){
+            filters.price = {};
+            let range = req.query.price.split('-');
+            if (range[0] !== ''){
+                filters.price.$gte = range[0];
             }
-            else if (!range[1]){
-                filter.price = {$gt: range[0]};
-            }
-            else {
-                filter.price = {$gte: range[0], $lte: range[1]};
-            }
-        }else {
             
-            filter.price = parseFloat(price);
+            if (range[1] !== ''){
+                filters.price.$lte = range[1];
+            }
+        } else {
+            filters.price = req.query.price;
         }
     }
+    if (typeof req.query.name !== 'undefined'){
+        filters.name = new RegExp('^' + req.query.name, 'i');
+    }
     
-    
-    Commercial.list(filter, sort, limit, skip, fields).
+    Commercial.list(start, limit, sort, includeTotal, filters).
     then(function (ads) {
-        res.json({success: true, ads});
+        res.json({success: true, commercials: ads});
     }).catch(next);
     
+});
+
+
+router.get('/tags', function (req, res) {
+    res.json({ ok: true, allowedTags: Commercial.allowedTags() });
 });
 
 

@@ -2,6 +2,10 @@
  * Created by Fran on 20/10/16.
  */
 
+/**
+ * Push Token model
+ */
+
 "use strict";
 
 let mongoose = require('mongoose');

@@ -20,7 +20,10 @@
     "mongoose": "^4.6.5",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
-    "sha256": "^0.2.0",
     "validator": "^6.1.0"
+  },
+  "devDependencies": {
+    "jscs": "^2.1.1",
+    "jshint": "^2.8.0"
   }
 }
