@@ -46,7 +46,7 @@ app.use('/', require('./routes/index'));
 
 // API routes
 app.use('/apiv1/users', require('./routes/apiv1/users'));
-app.use('/apiv1/tokens', require('./routes/apiv1/tokens'));
+app.use('/apiv1/tokens', require('./routes/apiv1/pushtokens'));
 app.use('/apiv1/tokens', require('./routes/apiv1/commercials'));
 
 // catch 404 and forward to error handler
@@ -66,7 +66,7 @@ if (app.get('env') === 'development') {
     
     // si es una petición de API devolvemos JSON, sino una página
     if (isAPI(req)) {
-      res.json({success: false, error: err});
+      res.json({success: false,  error: { code: err.code || err.status || 500, message: err.message, err: err }});
     } else {
       res.render('error', {
         message: err.message,
@@ -84,7 +84,7 @@ app.use(function(err, req, res, next) {
   
   // si es una petición de API devolvemos JSON, sino una página
   if (isAPI(req)) {
-    res.json({success: false, error: err});
+    res.json({success: false, error: { code: err.code || err.status || 500, message: err.message, err: err }});
   } else {
     res.render('error', {
       message: err.message,
